@@ -9,6 +9,7 @@
   "author": "Aadil",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "underscore": "^1.8.3"
   }
 }
