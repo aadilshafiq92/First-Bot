@@ -2,6 +2,7 @@ const botsettings = require("./config.json");
 const Discord = require("discord.js");
 const prefix = botsettings.prefix;
 const testmodule = require("./testmodule.js")
+const hearts = require("./heartsGame/heartsGame.js");
 
 const bot = new Discord.Client({disableEveryone: true});
 
@@ -29,8 +30,9 @@ bot.on("ready", async () =>
 
 bot.on("message", async message =>
 {
-	if(message.author.bot) return; //will return if messaged by bot
-	if(message.channel.type === "dm") return; //will return if in a dm
+	if (message.author.bot) return; //will return if messaged by bot
+	if (message.channel.type === "dm") return; //will return if in a dm
+	if (hearts.parse(message)) return;
 	if (testmodule.parse(message)) return;
 });
 
