@@ -67,13 +67,4 @@ module.exports = Backbone.Collection.extend({
     return card;
   },
 
-  blankDeck: function()
-  {
-    var card = this.models[index];
-    for(var i = 0; i < this.size(); i++)
-    {
-      this.remove(card);
-    }
-  }
-
 });

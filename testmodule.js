@@ -29,25 +29,25 @@ module.exports = {
         //Check if command executor has the right permission to do this command
         if(!message.member.hasPermission("MANAGE_MESSAGES"))
         {
-          return message.channel.sendMessage("You do not have manage message");
+          return message.channel.send("You do not have manage message");
         }
 
         //Get the mentioned user, return if there is none
         let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
         if(!toMute)
         {
-          return message.channel.sendMessage("You did not specify a user to mention!");
+          return message.channel.send("You did not specify a user to mention!");
         }
 
         //If the mutee has the same or higher role than the muter, return
         if(toMute.id === message.author.id)
         {
-          return message.channel.sendMessage("You cannot mute yourself.");
+          return message.channel.send("You cannot mute yourself.");
         }
 
         if(toMute.highestRole.position >= message.member.highestRole.position)
         {
-          return message.channel.sendMessage("You cannot mute a member who is higher or has the same role as you");
+          return message.channel.send("You cannot mute a member who is higher or has the same role as you");
         }
 
 
@@ -75,11 +75,11 @@ module.exports = {
 
         if(toMute.roles.has(role.id))
         {
-          return message.channel.sendMessage("This user is already muted!");
+          return message.channel.send("This user is already muted!");
         }
 
         await toMute.addRole(role);
-        message.channel.sendMessage("I have muted them.")
+        message.channel.send("I have muted them.")
 
         return true;
       }
@@ -87,32 +87,32 @@ module.exports = {
       else if(utils.command(message.content, "unmute"))
       {
         //Check if command executor has the right permission to do this command
-        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.sendMessage("You do not have manage message");
+        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("You do not have manage message");
 
         //Get the mentioned user, return if there is none
         let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
-        if(!toMute) return message.channel.sendMessage("You did not specify a user to mention!");
+        if(!toMute) return message.channel.send("You did not specify a user to mention!");
 
         //If the mutee has the same or higher role than the muter, return
         if(toMute.id === message.author.id)
         {
-          return message.channel.sendMessage("You cannot mute yourself.");
+          return message.channel.send("You cannot mute yourself.");
         }
 
         if(toMute.highestRole.position >= message.member.highestRole.position)
         {
-          return message.channel.sendMessage("You cannot mute a member who is higher or has the same role as you");
+          return message.channel.send("You cannot mute a member who is higher or has the same role as you");
         }
 
         let role = message.guild.roles.find(r => r.name === "Muted By Bot");
 
         if(!role || !toMute.roles.has(role.id))
         {
-          return message.channel.sendMessage("This user is already muted!");
+          return message.channel.send("This user is already muted!");
         }
 
         await toMute.removeRole(role);
-        message.channel.sendMessage("I have unmuted them.")
+        message.channel.send("I have unmuted them.")
 
         return true;
       }

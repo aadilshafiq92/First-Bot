@@ -1,71 +1,70 @@
 const utils = require('../utils.js');
 const Discord = require("discord.js");
 const Deck = require("./deck.js");
-const Player = require("./player.js")
+const Player = require("./player.js");
+const PlayGroup = require("./PlayGroup.js");
 const _ = require("underscore");
 
 var dealersDeck = new Deck;
-var players = [];
+var playGroup = new PlayGroup;
 var game = true;
 
 module.exports = {
   parse: async function(message) {
     var textChannel = message.channel;
     if (utils.command(message.content, "hg-start")) {
-      game = true;
       //resetting the main deck and everyone's hands
+      game = true;
       dealersDeck.newDeck();
-      players = [];
+      playGroup = new PlayGroup;
+
       if (message.mentions.users.array().length < 4) {
         //return message.channel.sendMessage("Not enough players");
       }
-      var count = 0;
+
       //create players
       _.each(message.mentions.users.array(), function(user) {
-        players[count] = new Player({
+
+        playGroup.add({
           user: user
         });
-        count++;
       })
       //deal cards
-      for (var x = 0; x < players.length; x++) {
-        for (var i = 0; i < 13; i++) {
-          players[x].dealCards(dealersDeck.getRandomCard());
-        }
-      }
-      //give players their initial hands
-      for (var i = 0; i < players.length; i++) {
-        players[i].sendDM("You are now in a Hearts game");
 
-        players[i].sendDMEmbed(players[i].showHand());
-      }
-      //for(var i = 0;)
-      //console.log(players[0].get("hand"));
+      playGroup.each(function(player) {
+        for (var i = 0; i < 13; i++) {
+          player.dealCards(dealersDeck.getRandomCard());
+        }
+      });
+      //give players their initial hands
+      playGroup.each(function(player) {
+        player.sendDM("You are now in a Hearts game");
+
+        player.sendDMEmbed(player.showHand());
+      });
       return true;
     } else if (utils.command(message.content, "hg-stop")) {
       game = false;
       dealersDeck.newDeck();
-      players = [];
-      return message.channel.sendMessage("The game is stopped");
-
+      playGroup = new PlayGroup;
+      return message.channel.send("The game is stopped");
     }
     //gives current hand
     else if (utils.command(message.content, "getHand")) {
-      //console.log(message.member.id)
       if (game) {
-        for (var i = 0; i <= players.length; i++) {
-          if (i === players.length) {
-            message.member.send("You aren't in this game")
-            return;
-          } else if (message.member.id === players[i].get("user").id) {
-            players[i].sendDMEmbed(players[i].showHand());
-            return;
+        var found = false;
+        playGroup.each(function(player) {
+          if (message.member.id === player.get("user").id) {
+            found = true;
+            player.sendDMEmbed(player.showHand());
           }
-          //console.log(players[i].get("user").id);
+        });
+        if (!found) {
+          return message.channel.send("You are not currently in this game");
         }
       } else {
         {
-          return message.channel.sendMessage("There is currently no game");
+          return message.channel.send("There is currently no game");
         }
       }
     }
