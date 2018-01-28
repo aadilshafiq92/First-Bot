@@ -4,6 +4,7 @@ module.exports = Backbone.Model.extend({
     this.set("face", args.face);
     this.set("value", args.value);
     this.set("id", "" + args.value + args.face)
+    this.set("order", "" + args.order)
   },
 
   /**

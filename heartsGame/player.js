@@ -17,6 +17,10 @@ module.exports = Backbone.Model.extend({
     this.get("hand").add(card);
   },
 
+  getUser: function(){
+    return this.get("user");
+  },
+
   sendDM: function(content){
     if(this.get("user").dmChannel === null){
       this.get("user").createDM()
@@ -24,11 +28,11 @@ module.exports = Backbone.Model.extend({
           dmChannel.send(content);
         }
         );
-        console.log("Creating a channel");
+        //console.log("Creating a channel");
     }
     else {
       this.get("user").dmChannel.send(content);
-      console.log("Channel exists");
+      //console.log("Channel exists");
     }
   },
 
@@ -39,15 +43,15 @@ module.exports = Backbone.Model.extend({
           dmChannel.send("", content);
         }
         );
-        console.log("Creating a channel");
+        //console.log("Creating a channel");
     }
     else {
       this.get("user").dmChannel.send("", content);
-      console.log("Channel exists");
+      //console.log("Channel exists");
     }
   },
 
-  showHand :function(){
+  showHand: function(){
     var hand = "";
 
     this.get("hand").each(function(card){
@@ -61,6 +65,16 @@ module.exports = Backbone.Model.extend({
       //   embed.addField(card.getValue() + " of " + card.getFace(), card.getID());
       // });
     return embed;
-  }
+  },
 
+  hasStart: function(){
+    var found = false;
+    this.get("hand").each(function(card){
+      if(card.getID() === "2club")
+      {
+        found = true;
+      }
+    })
+    return found;
+  }
 });

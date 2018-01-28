@@ -9,8 +9,6 @@ module.exports = {
     //if(command === `${prefix}userinfo`)
     if (utils.command(message.content, "userinfo"))
       {
-        console.log("We got into userinfo")
-        //console.log("THIS IS WORKING");
         let embed = new Discord.RichEmbed()
           .setAuthor(message.author.username)
           .setDescription("This is the user's info!")
@@ -19,8 +17,7 @@ module.exports = {
           .addField("ID", message.author.id)
           .addField("Created At", message.author.createdAt);
 
-        message.channel.sendEmbed(embed);
-
+        message.channel.send(embed);
         return true;
       }
     //if(command === `${prefix}mute`)

@@ -8,6 +8,7 @@ const _ = require("underscore");
 var dealersDeck = new Deck;
 var playGroup = new PlayGroup;
 var game = true;
+var turn = 0;
 
 module.exports = {
   parse: async function(message) {
@@ -15,40 +16,43 @@ module.exports = {
     if (utils.command(message.content, "hg-start")) {
       //resetting the main deck and everyone's hands
       game = true;
+      turn = 1;
       dealersDeck.newDeck();
       playGroup = new PlayGroup;
 
       if (message.mentions.users.array().length < 4) {
-        //return message.channel.sendMessage("Not enough players");
+        game = false;
+        return message.channel.send("Not enough players");
       }
 
       //create players
       _.each(message.mentions.users.array(), function(user) {
-
         playGroup.add({
           user: user
         });
       })
-      //deal cards
 
+      //deal cards
       playGroup.each(function(player) {
         for (var i = 0; i < 13; i++) {
           player.dealCards(dealersDeck.getRandomCard());
         }
       });
-      //give players their initial hands
-      playGroup.each(function(player) {
-        player.sendDM("You are now in a Hearts game");
 
-        player.sendDMEmbed(player.showHand());
-      });
+      //give players their initial hands
+      playGroup.firstHand(message);
       return true;
-    } else if (utils.command(message.content, "hg-stop")) {
+
+    }
+
+    //stops game
+    else if (utils.command(message.content, "hg-stop")) {
       game = false;
       dealersDeck.newDeck();
       playGroup = new PlayGroup;
       return message.channel.send("The game is stopped");
     }
+
     //gives current hand
     else if (utils.command(message.content, "getHand")) {
       if (game) {
@@ -67,6 +71,11 @@ module.exports = {
           return message.channel.send("There is currently no game");
         }
       }
+    }
+
+    else if (utils.command(message.content, "play"))
+    {
+
     }
     /*
     Commands:
