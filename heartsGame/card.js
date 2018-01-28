@@ -14,11 +14,15 @@ module.exports = Backbone.Model.extend({
   },
 
   getFace: function(){
-    //TODO
+    return this.get("face");
   },
 
   getValue: function(){
-    //TODO
+    return this.get("value");
+  },
+
+  getID: function(){
+    return this.get("id");
   },
 
   isHearts: function(){

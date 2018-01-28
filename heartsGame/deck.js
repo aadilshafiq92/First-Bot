@@ -15,7 +15,7 @@ module.exports = Backbone.Collection.extend({
     this.add(new Card({face: "club", value: "8"}));
     this.add(new Card({face: "club", value: "9"}));
     this.add(new Card({face: "club", value: "10"}));
-    this.add(new Card({face: "club", value: "j"}));
+    this.add(new Card({face: "club", value: "jack"}));
     this.add(new Card({face: "club", value: "queen"}));
     this.add(new Card({face: "club", value: "king"}));
     this.add(new Card({face: "club", value: "ace"}));
@@ -28,7 +28,7 @@ module.exports = Backbone.Collection.extend({
     this.add(new Card({face: "spades", value: "8"}));
     this.add(new Card({face: "spades", value: "9"}));
     this.add(new Card({face: "spades", value: "10"}));
-    this.add(new Card({face: "spades", value: "j"}));
+    this.add(new Card({face: "spades", value: "jack"}));
     this.add(new Card({face: "spades", value: "queen"}));
     this.add(new Card({face: "spades", value: "king"}));
     this.add(new Card({face: "spades", value: "ace"}));
@@ -41,7 +41,7 @@ module.exports = Backbone.Collection.extend({
     this.add(new Card({face: "diamond", value: "8"}));
     this.add(new Card({face: "diamond", value: "9"}));
     this.add(new Card({face: "diamond", value: "10"}));
-    this.add(new Card({face: "diamond", value: "j"}));
+    this.add(new Card({face: "diamond", value: "jack"}));
     this.add(new Card({face: "diamond", value: "queen"}));
     this.add(new Card({face: "diamond", value: "king"}));
     this.add(new Card({face: "diamond", value: "ace"}));
@@ -54,7 +54,7 @@ module.exports = Backbone.Collection.extend({
     this.add(new Card({face: "hearts", value: "8"}));
     this.add(new Card({face: "hearts", value: "9"}));
     this.add(new Card({face: "hearts", value: "10"}));
-    this.add(new Card({face: "hearts", value: "j"}));
+    this.add(new Card({face: "hearts", value: "jack"}));
     this.add(new Card({face: "hearts", value: "queen"}));
     this.add(new Card({face: "hearts", value: "king"}));
     this.add(new Card({face: "hearts", value: "ace"}));
@@ -65,6 +65,15 @@ module.exports = Backbone.Collection.extend({
     var card = this.models[index];
     this.remove(card);
     return card;
+  },
+
+  blankDeck: function()
+  {
+    var card = this.models[index];
+    for(var i = 0; i < this.size(); i++)
+    {
+      this.remove(card);
+    }
   }
 
 });
