@@ -4,7 +4,7 @@ module.exports = Backbone.Model.extend({
     this.set("face", args.face);
     this.set("value", args.value);
     this.set("id", "" + args.value + args.face)
-    this.set("order", "" + args.order)
+    this.set("order", args.order)
   },
 
   /**
@@ -26,12 +26,26 @@ module.exports = Backbone.Model.extend({
     return this.get("id");
   },
 
+  getOrder: function(){
+    return this.get("order");
+  },
+
   isHearts: function(){
-    //TODO
+    if(this.get("face") === "hearts"){
+      return true;
+    }
+    else{
+      return false;
+    }
   },
 
   isQoS: function(){
-    //TODO
-  },
+    if(this.get("face") === "spades" && this.get("value") === "queen"){
+      return true;
+    }
+    else{
+      return false;
+    }
 
+  },
 });
